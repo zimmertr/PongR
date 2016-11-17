@@ -1,4 +1,6 @@
 # PongR
+![Alt text](Screensots/home_page.png?raw=true "Home Page")
+
 PongR is a pong-like game written to have multiplayer functionality and a waiting room over a network connection. It is written in C# and the project uses SignalR. 
 
 For my Software Development Tools class at Grand Valley State University, I was responsible for identifying an existing C# program that utilied Cordova, SignalR or any web framework and adding functionality to it.
@@ -16,6 +18,8 @@ For this project, I added the following functionality:
 5. Made the ball color change to the color of the last paddle it hit to denote who struck the ball last.
 6. After each successful hit the ball shrinks in radius until it reaches a floor value to increase difficulty.
 7. After each successful hit the paddle shrinks in radius until it reaches a floor value to increase difficulty. 
+
+![Alt text](Screensots/game.png?raw=true "Gameplay")
 
 
 Existing problems:
