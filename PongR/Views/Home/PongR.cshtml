@@ -14,7 +14,11 @@
             <ul>
                 <li id="player1-name" data-bind="text: player1.user.username">Player #1</li>
                 <li id="player1-score" class="player-score" data-bind="text: player1.score">0</li>
-            </ul>            
+            </ul>
+            <ul class="wins">
+                <li id="player1-winText">Wins</li>
+                <li id="player1-wins" class="player-wins" data-bind="text: player1.wins">0</li>
+            </ul>           
         </div>
     </div>
     <div id="vs"><div>VS</div></div>
@@ -23,6 +27,10 @@
             <ul>
                 <li id="player2-name" data-bind="text: player2.user.username">Player #2</li>
                 <li id="player2-score" class="player-score" data-bind="text: player2.score">0</li>
+            </ul>
+            <ul class="wins">
+                <li id="player2-winText">Wins</li>
+                <li id="player2-wins" class="player-wins" data-bind="text: player2.wins">0</li>
             </ul>
         </div>
     </div>

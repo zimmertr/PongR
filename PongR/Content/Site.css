@@ -14,7 +14,7 @@ body
 h1 
 {
 	font-size: 50px;    
-	padding-bottom: 20px;	
+	padding-bottom: 0px;	
 }
 
 h2 
@@ -22,6 +22,10 @@ h2
 	font-size: 25px;    	
 	padding-left: 20px;
 	font-weight: lighter;
+}
+
+h3{
+    padding-top: 0px;
 }
 
 ul 
@@ -53,6 +57,8 @@ li {
 	width: 700px;    
 	margin: 0 auto;
 	margin-top: 5%;
+    text-align: center;
+    
 }
 
 
@@ -63,6 +69,7 @@ li {
 #input-box 
 {
 	margin-top: 40px;
+    font-size: 20px;
 }
 
 label 
@@ -127,7 +134,7 @@ input, button
 {
 	margin-top: 2%;
 	width: 52%;
-	height: 40%;
+	height: 60%;
 	border: 1px solid black;
 }
 
@@ -153,6 +160,15 @@ input, button
 	float:right;	
 }
 
+.wins{
+    display: block;
+    clear: left;
+}
+
+.player-wins{
+    float:right;
+}
+
 #waiter 
 {
     visibility: hidden;
@@ -176,6 +192,7 @@ input, button
 #fieldContainer
 {
 	display: block;	
-	margin-left: 3%;
+	margin: 0px auto;
+    text-align: center;
 }
 

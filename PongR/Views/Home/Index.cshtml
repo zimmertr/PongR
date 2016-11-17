@@ -1,19 +1,37 @@
 ﻿@{
-    ViewBag.Title = "Welcome to ChatR";
+    ViewBag.Title = "PongR";
 }
-<a href="https://github.com/vgheri/PongR"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
 @using (Html.BeginForm("Index", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
-{    
-    <div id="form-container">       
+{
+    <div id="form-container">
+     
             <h1>PongR</h1>
-            <span id="description">A pong like application built with <a href="http://signalr.net/" title="SignalR" target="_blank">SignalR</a> to allow multiplayer over the Internet</span>
-            <div id="input-box">
-                <label for="username">Choose a user name to start</label>
-                <input type="text" id="username" class="input-medium search-query" placeholder="Type here..." name="username" autofocus="autofocus" 
-                    maxlength="15" required="required" />
-                <button type="submit" class="btn btn-large btn-primary">Let's play!</button>               
-            </div>
+            <h3> Modified by Sean, Jared, and TJ</h3>
+        <img src="Content/images/paddle.png" alt="Paddle icon" width="200"><br /><br />
+            
+     
+        <span id="description">A pong like application built with <a href="http://signalr.net/" title="SignalR" target="_blank">SignalR</a> to allow multiplayer over the Internet. The game was originally developed by Valerio Gheri and posted on <a href="https://github.com/vgheri/PongR">Github</a>.<br /><br />We have modified his project in the following ways:<br /></span>
+       
+        <div style="text-align: left; width: 200px; margin: 0 auto;"
+         <p>
+            <br />1) Changing ball size
+            <br />2) Changing paddle size
+            <br />3) Paddle color
+            <br />4) Ball color
+            <br />5) Winning mechanics
+            <br />6) Message location
+            <br />7) New home page
+            <br />8) Updated CSS
+            
+        </p>
+
+        <div id="input-box">
+            <label for="username">Choose a user name to start</label>
+            <input type="text" id="username" class="input-medium search-query" placeholder="Type here..." name="username" autofocus="autofocus"
+                   maxlength="15" required="required" />
+            <button type="submit" class="btn btn-large btn-primary">Let's play!</button>
+        </div>
     </div>
-    
+
     <!-- Idea: add info about how many matches are ongoing -->
 }

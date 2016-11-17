@@ -93,6 +93,7 @@ var PongR = (function ($, ko) {
         this.barDirection = ""; // Can be empty (i.e. not moving), up or down
         this.inputs = []; // Local history of inputs for this client. Each input is of type myPongR.Input
         this.score = ko.observable(0);
+        this.wins = ko.observable(0);                                               //added this line for winning --SD 4-17-16
         this.lastProcessedInputId = -1;
         this.resetPositionAndDirection = function (fieldWidth) {
             self.barDirection = "";
@@ -108,7 +109,7 @@ var PongR = (function ($, ko) {
 
     function Ball(direction, fieldWidth, fieldHeight) {
         var self = this;
-        this.radius = 10;
+        this.radius = 30;
         this.position = new Point(fieldWidth / 2, fieldHeight / 2); // The ball starts at the center of the field
         this.direction = direction; // can be left or right        
         this.angle = (direction === "right" ? 0 : 180);
@@ -171,6 +172,7 @@ var PongR = (function ($, ko) {
         clientPlayer.topLeftVertex.x = convertToPixels(serverPlayer.TopLeftVertex.X);
         clientPlayer.topLeftVertex.y = convertToPixels(serverPlayer.TopLeftVertex.Y);
         clientPlayer.score(serverPlayer.Score);
+        clientPlayer.wins(serverPlayer.Wins);                                                   //added this line for winning --SD 4-17-16
         clientPlayer.lastProcessedInputId = serverPlayer.LastProcessedInputId
     };
 
@@ -334,7 +336,7 @@ var PongR = (function ($, ko) {
         // sequenceNumber: the sequence number for this batch of inputs
         var y_dir = 0;
         var ic = player.inputs.length;
-        var step = Math.round(barScrollUnit * deltaTime); 
+        var step = Math.round(barScrollUnit * deltaTime);
         if (ic) {
             for (var j = 0; j < ic; ++j) {
                 //don't process ones we already have simulated locally
@@ -405,9 +407,11 @@ var PongR = (function ($, ko) {
         pongR.canvasContext.fillRect(0, 0, pongR.settings.viewport.width, pongR.settings.viewport.height);
     };
 
+    var color = "#FFFFFF";
     function drawBall() {
         //Set the color for this player
-        pongR.canvasContext.fillStyle = "#EE0000"; // Red
+        pongR.canvasContext.fillStyle = color; // Red
+
         //Draw a circle for us
         pongR.canvasContext.beginPath();
         pongR.canvasContext.arc(pongR.game.ball.position.x, pongR.game.ball.position.y, pongR.game.ball.radius, 0, 2 * Math.PI);
@@ -416,7 +420,12 @@ var PongR = (function ($, ko) {
 
     function drawPlayer(player) {
         //Set the color for this player
-        pongR.canvasContext.fillStyle = "#00FF00"; // Light Green
+        if (player == pongR.game.player1) {
+            pongR.canvasContext.fillStyle = "#ADD8E6"; // Blue
+        }
+        else if (player == pongR.game.player2) {
+            pongR.canvasContext.fillStyle = "#FFA500"; // Orange
+        }
         //Draw a rectangle for us
         pongR.canvasContext.fillRect(player.topLeftVertex.x, player.topLeftVertex.y, player.barWidth, player.barHeight);
     };
@@ -437,16 +446,18 @@ var PongR = (function ($, ko) {
 
     function drawText(counter) {
         var display = "Game starts in " + counter;
-        pongR.canvasContext.clearRect(400, 260, pongR.canvasContext.measureText(display).width, 20);
+        pongR.canvasContext.clearRect(525, 55, pongR.canvasContext.measureText(display).width, 20);
         pongR.canvasContext.fillStyle = "#111111"; // Almost Black
-        pongR.canvasContext.fillRect(400, 260, pongR.canvasContext.measureText(display).width, 20);
+        pongR.canvasContext.fillRect(525, 55, pongR.canvasContext.measureText(display).width, 20);
 
         pongR.canvasContext.font = '20px "Helvetica"';
         pongR.canvasContext.fillStyle = "#EE0000"; // Red        
 
-        pongR.canvasContext.fillText(display, 400, 280);
+        pongR.canvasContext.fillText(display, 525, 75);
 
     };
+
+
 
     // This takes input from the client and keeps a record. 
     // It also sends the input information to the server immediately
@@ -560,6 +571,7 @@ var PongR = (function ($, ko) {
             player.topLeftVertex = v_lerp(other_past_pos, other_target_pos, time_point);
             player.barDirection = otherTarget.BarDirection;
             player.score(otherTarget.Score);
+            player.wins(otherTarget.wins);                                      //added this line for winning --SD 4-17-16
             player.lastProcessedInputId = otherTarget.LastProcessedInputId
         }
     }
@@ -625,14 +637,36 @@ var PongR = (function ($, ko) {
         if (collision) {
             pongR.game.ball.direction = "right";
             pongR.game.ball.angle = calculateNewAngleAfterPlayerHit(pongR.game.player1, pongR.game.ball.direction);
+            color = "#ADD8E6";
+
+            if (pongR.game.ball.radius > 1) {
+
+                pongR.game.ball.radius = pongR.game.ball.radius - 1;
+            }
+
+            if (pongR.game.player1.barHeight > 48) {
+                pongR.game.player1.barHeight = pongR.game.player1.barHeight - 3;
+            }
+
+
         }
         else {
             collision = checkCollisionWithPlayer(pongR.game.player2, pongR.game.ball);
             if (collision) {
                 pongR.game.ball.direction = "left";
                 pongR.game.ball.angle = calculateNewAngleAfterPlayerHit(pongR.game.player2, pongR.game.ball.direction);
+                color = "#ffa500";
+
+                if (pongR.game.ball.radius > 1) {
+                    pongR.game.ball.radius = pongR.game.ball.radius - 1;
+                }
+
+                if (pongR.game.player2.barHeight > 48) {
+                    pongR.game.player2.barHeight = pongR.game.player2.barHeight - 3;
+                }
+
             }
-            // No collision with players, let's check if we have a collision with the field delimiters
+                // No collision with players, let's check if we have a collision with the field delimiters
             else {
                 collision = checkCollisionWithFieldDelimiters(pongR.game.ball, pongR.settings.viewport.width, pongR.settings.viewport.height);
                 if (collision) {
@@ -685,7 +719,7 @@ var PongR = (function ($, ko) {
         pongR.other = pongR.me.user.username() === pongR.game.player1.user.username() ? pongR.game.player2 : pongR.game.player1;
 
         ko.applyBindings(pongR.game);
-                
+
         // Initialise keyboard handler
         keyboard = new THREEx.KeyboardState();
 
@@ -707,8 +741,10 @@ var PongR = (function ($, ko) {
         keyboard.destroy();
         pongR.game.player1.user.username("Player #1");
         pongR.game.player1.score("0");
+        pongR.game.player1.wins("0");                   //added this line for winning --SD 4-17-16
         pongR.game.player2.user.username("Player #2");
         pongR.game.player2.score("0");
+        pongR.game.player2.wins("0");                   //added this line for winning --SD 4-17-16
         pongR.game.destroy();
     };
 
@@ -736,6 +772,11 @@ var PongR = (function ($, ko) {
         var remoteOther = pongR.me.playerNumber === 2 ? updatePacket.Game.Player1 : updatePacket.Game.Player2;
 
         if (goal) {
+
+            pongR.game.player1.wins(updatePacket.Game.Player1.Wins);                             //added this line for winning --SD 4-17-16
+            pongR.game.player2.wins(updatePacket.Game.Player2.Wins);                             //added this line for winning --SD 4-17-16
+
+
             pongR.goalTimestamp = new Date().getTime();
             // Only update my last processed input id
             pongR.me.lastProcessedInputId = remoteMe.LastProcessedInputId
@@ -743,10 +784,13 @@ var PongR = (function ($, ko) {
             pongR.game.player1.score(updatePacket.Game.Player1.Score);
             pongR.game.player2.score(updatePacket.Game.Player2.Score);
             // Then reset positions
+            pongR.game.player1.barHeight = 96;
+            pongR.game.player2.barHeight = 96;
             ResetPositionsToInitialState(updatePacket.Game);
             // Reset keyboard buffer
             keyboard.reset();
             performCountdown(3);
+            pongR.game.ball.radius = 30;
         }
         else {
             // Me
@@ -761,6 +805,7 @@ var PongR = (function ($, ko) {
             }
             else {
                 pongR.other.score(remoteOther.Score);
+                pongR.other.wins(remoteOther.Wins);                                         //added this line for winning --SD 4-17-16
                 pongR.other.lastProcessedInputId = remoteOther.LastProcessedInputId;
                 pongR.other.barDirection = remoteOther.BarDirection;
             }
@@ -819,4 +864,4 @@ var PongR = (function ($, ko) {
     pongR.PublicPrototype.UnitTestPrototype.updateGame = updateGame;
 
     return pongR.PublicPrototype;
-} (jQuery, ko));
+}(jQuery, ko));

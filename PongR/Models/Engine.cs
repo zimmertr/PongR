@@ -13,15 +13,15 @@ namespace PongR.Models
         private static Dictionary<string, Game> _games = new Dictionary<string, Game>();
         // Key : room Id / value: timestamp of the goal 
         private static Dictionary<string, DateTime> _goalTimestamps = new Dictionary<string, DateTime>();
-        private const int BAR_SCROLL_UNIT = 330; // 330 px per second
-        private const int BAR_SCROLL_UNIT_PERC = 1; // %
+        private const int BAR_SCROLL_UNIT = 400; // 330 px per second
+        private const int BAR_SCROLL_UNIT_PERC = 5; // %
         private const int BALL_FIXED_STEP = 400; // 400 px per second 
         private const int FIELD_WIDTH = 1200; // px
         private const int FIELD_HEIGHT = 600; // px
         // Minimum distance between the player and the field delimiters (up and down)
         private const int FIXED_GAP = 30; // px
         private const int PAUSE_AFTER_GOAL = 3; //seconds
-        private const double DELTA_TIME = 0.015; // The physics update loop runs each 15ms
+        private const double DELTA_TIME = 0.025; // The physics update loop runs each 15ms
 
         public static Game CreateGame(string gameId, Player host, Player opponent)
         {
@@ -291,6 +291,15 @@ namespace PongR.Models
                     barCollision = true;
                     newBallDirection = "right";
                     newAngle = CalculateNewAngleAfterPlayerHit(game.Player1, newBallDirection);
+                    if (game.Player1.BarHeight > 48)
+                    {
+                        game.Player1.BarHeight = game.Player1.BarHeight - 3;
+                    }
+                    if (game.Ball.Radius > 1)
+                    {
+
+                        game.Ball.Radius = game.Ball.Radius - 1;
+                    }
                 }
             }
             else if (game.Player2.TopLeftVertex.X <= game.Ball.Position.X + game.Ball.Radius)
@@ -301,6 +310,15 @@ namespace PongR.Models
                     barCollision = true;
                     newBallDirection = "left";
                     newAngle = CalculateNewAngleAfterPlayerHit(game.Player2, newBallDirection);
+                    if (game.Player2.BarHeight > 48)
+                    {
+                        game.Player2.BarHeight = game.Player2.BarHeight - 3;
+                    }
+                    if (game.Ball.Radius > 1)
+                    {
+
+                        game.Ball.Radius = game.Ball.Radius - 1;
+                    }
                 }
             }
             if (barCollision)
@@ -377,12 +395,35 @@ namespace PongR.Models
 
         private static void RestartGameAfterGoal(Game game)
         {
+            //if a player won the game
+            if (game.Player1.Score == 5)                                //added these lines for winning --SD 4-17-16
+            {
+                //reset scores
+                game.Player1.Score = 0;
+                game.Player2.Score = 0;
+
+                //add win to player
+                game.Player1.Wins++;
+            }else if (game.Player2.Score == 5)
+            {
+                //reset scores
+                game.Player1.Score = 0;
+                game.Player2.Score = 0;
+
+                //add win to player
+                game.Player2.Wins++;
+            }                                                         //added these lines for winning --SD 4-17-16
+
+
             Random random = new Random();            
             // Reset objects position to initial state
             game.Player1.ResetPlayerToIntialPositionAndState(FIELD_WIDTH);
             game.Player2.ResetPlayerToIntialPositionAndState(FIELD_WIDTH);
             string ballDirection = random.Next() % 2 == 0 ? "left" : "right";
             int ballAngle = ballDirection.Equals("left") ? 180 : 0;
+            game.Ball.Radius = 30;
+            game.Player1.BarHeight = 96;
+            game.Player2.BarHeight = 96;
             game.Ball.ResetBallToInitialPosition(ballDirection, ballAngle, FIELD_WIDTH, FIELD_HEIGHT);
         }
     }

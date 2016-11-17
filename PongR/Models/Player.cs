@@ -25,6 +25,8 @@ namespace PongR.Models
         public Queue<PlayerInput> UnprocessedPlayerInputs { get; set; }
         [DataMember]
         public int LastProcessedInputId { get; set; }
+        [DataMember]
+        public int Wins { get; set; }                                           //added this line for winning --SD 4-17-16
 
         public Player(User user, int playerNumber, bool isHost, int fieldWidth)
         {
@@ -40,6 +42,8 @@ namespace PongR.Models
             Score = 0;
             UnprocessedPlayerInputs = new Queue<PlayerInput>();
             LastProcessedInputId = -1;
+
+            Wins = 0;                                                          //added this line for winning --SD 4-17-16
         }
 
         public void ResetPlayerToIntialPositionAndState(int fieldWidth)
