@@ -10,6 +10,7 @@ When I found PongR, it already had matchmaking, scorekeeping, and other basic fu
 
 ##Added Functionality
 
+```
 - A new, more interesting, home page.
 - Moved the 'Game Start' message up so it's not blocked by the ball.
 - Adding a winning function to the game after 3 points.
@@ -17,17 +18,20 @@ When I found PongR, it already had matchmaking, scorekeeping, and other basic fu
 - Made the ball color change to the color of the last paddle it hit to denote who struck the ball last.
 - After each successful hit the ball shrinks in radius until it reaches a floor value to increase difficulty.
 - After each successful hit the paddle shrinks in radius until it reaches a floor value to increase difficulty. 
+```
 
 ![Alt text](https://raw.githubusercontent.com/zimmertr/PongR/master/Screenshots/game.png "Gameplay")
 
 
 ##Existing Problems
-
+```
 - Performance over the internet is ghastly at best. LAN is okay. 
-
+- Ball bounce direction is predicable and boring
+```
 
 ##Ideas for Future Improvement
 
+```
 - Add powerups and better graphics.
 - Tweak game engine to increase performance by reducing server calls. 
 - Increasing the ball speed with each successful hit.
@@ -36,3 +40,4 @@ When I found PongR, it already had matchmaking, scorekeeping, and other basic fu
 - Implement a "multi-ball" powerup
 - Allow the paddle to move on the x-axis as well 
 - Add an "attack ball" powerup that destroys pieces of your paddle upon collision. 
+```
