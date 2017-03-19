@@ -1,5 +1,5 @@
 # PongR
-##Summary
+## Summary
 PongR is a pong-like game written to have multiplayer functionality and a waiting room over a network connection. It is written in C# and the project uses SignalR. 
 
 For my Software Development Tools class at Grand Valley State University, I was responsible for identifying an existing C# program that utilied Cordova, SignalR or any web framework and adding functionality to it.
@@ -8,7 +8,7 @@ When I found PongR, it already had matchmaking, scorekeeping, and other basic fu
 
 ![Alt text](https://raw.githubusercontent.com/zimmertr/PongR/master/Screenshots/home_page.png "Home Page")
 
-##Added Functionality
+## Added Functionality
 
 ```
 - A new, more interesting, home page.
@@ -23,13 +23,13 @@ When I found PongR, it already had matchmaking, scorekeeping, and other basic fu
 ![Alt text](https://raw.githubusercontent.com/zimmertr/PongR/master/Screenshots/game.png "Gameplay")
 
 
-##Existing Problems
+## Existing Problems
 ```
 - Performance over the internet is ghastly at best. LAN is okay. 
 - Ball bounce direction is predicable and boring
 ```
 
-##Ideas for Future Improvement
+## Ideas for Future Improvement
 
 ```
 - Add powerups and better graphics.
